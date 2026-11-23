@@ -1,0 +1,17 @@
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Using free ipapi.co service
+    fetch("https://ipapi.co/json/")
+      .then((res) => res.json())
+      .then((data) => {
+        let country = data.country_name; // Example: "United States"
+        let code = data.country; // Example: "US"
+        document.getElementById(
+          "user-location"
+        ).innerHTML = `<b>${country} (${code})</b>`;
+      })
+      .catch((err) => console.error("Error fetching IP location:", err));
+  });
+</script>
+
+<div id="user-location"></div>

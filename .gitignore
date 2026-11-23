@@ -1,0 +1,24 @@
+/node_modules
+/public/hot
+/public/storage
+/public/user-uploads
+/storage/*.key
+/vendor
+/.idea
+/.vscode
+/.vagrant
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+.env
+.DS_Store
+cat << 'EOF' >> .gitignore
+.env.*
+*.bak
+/vendor/
+/node_modules/
+/storage/logs/*
+custom_apis/error.txt
+*.log
+EOF

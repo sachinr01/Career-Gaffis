@@ -1,0 +1,89 @@
+{
+    "name": "laravel/laravel",
+    "description": "The Laravel Framework.",
+    "keywords": ["framework", "laravel"],
+    "license": "MIT",
+    "type": "project",
+    "require": {
+        "php": "^8.2",
+        "barryvdh/laravel-translation-manager": "^0.5.0",
+        "cviebrock/eloquent-sluggable": "10.0.*",
+        "doctrine/dbal": "^3.0",
+        "froiden/envato": "^1.0",
+        "froiden/laravel-installer": "^1.6",
+        "froiden/laravel-rest-api": "^9.0",
+        "guzzlehttp/guzzle": "^7.8",
+        "intervention/image": "^2.3",
+        "laravel/framework": "^10.0",
+        "laravel/helpers": "^1.1",
+        "laravel/nexmo-notification-channel": "^3.1",
+        "laravel/socialite": "^5.6",
+        "laravel/tinker": "^2.0",
+        "laravel/ui": "^4.0",
+        "laravelcollective/html": "^6.0.0",
+        "league/flysystem": "^3.8",
+        "league/flysystem-aws-s3-v3": "^3.0",
+        "maatwebsite/excel": "~3.1.0",
+        "macellan/laravel-zip": "^1.0",
+        "macsidigital/laravel-zoom": "^4.1",
+        "nexmo/laravel": "^2.1",
+        "nwidart/laravel-modules": "^6.0",
+        "php-http/guzzle7-adapter": "^1.0",
+        "swiftmailer/swiftmailer": "6.0.*",
+        "trebol/entrust": "^1.0",
+        "tymon/jwt-auth": "^1.0.0",
+        "yajra/laravel-datatables-buttons": "~4.6",
+        "yajra/laravel-datatables-html": "~4.4",
+        "yajra/laravel-datatables-oracle": "^9.0"
+    },
+    "require-dev": {
+        "facade/ignition": "^2.0",
+        "fzaninotto/faker": "~1.4",
+        "mockery/mockery": "0.9.*",
+        "nunomaduro/collision": "^7.0",
+        "phpunit/phpunit": "^10.0"
+    },
+    "autoload": {
+        "classmap": [
+            "database/seeds",
+            "database/factories"
+        ],
+        "files": [
+            "start.php"
+        ],
+        "psr-4": {
+            "App\\": "app/",
+            "Modules\\": "Modules/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": [
+            ]
+        }
+    },
+    "scripts": {
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate"
+        ],
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover"
+        ]
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
