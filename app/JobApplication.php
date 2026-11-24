@@ -10,9 +10,8 @@ class JobApplication extends Model
 {
     use Notifiable, SoftDeletes;
 
-    protected $dates = ['dob'];
-
     protected $casts = [
+        'dob' => 'datetime',
         'skills' => 'array'
     ];
 

@@ -8,7 +8,6 @@ class ScheduleComments extends Model
 {
     protected $guarded = ['id'];
     
-    protected $dates = ['created_at'];
     protected $table = 'interview_schedule_comments';
 
     // Relation with job application

@@ -10,9 +10,9 @@ class Job extends Model
 {
     use Sluggable;
 
-    protected $dates = ['end_date', 'start_date'];
-
     protected $casts = [
+        'end_date' => 'datetime',
+        'start_date' => 'datetime',
         'required_columns' => 'array',
         'meta_details' => 'array',
         'section_visibility' => 'array'

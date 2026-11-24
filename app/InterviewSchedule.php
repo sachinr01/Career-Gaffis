@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class InterviewSchedule extends Model
 {
-    protected $dates = ['schedule_date','created_at'];
+    protected $casts = [
+        'schedule_date' => 'datetime',
+    ];
 
     // Relation with job application
     public function jobApplication(){

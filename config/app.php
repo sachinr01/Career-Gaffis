@@ -164,7 +164,6 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         Froiden\LaravelInstaller\Providers\LaravelInstallerServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-        Macellan\Zip\ZipServiceProvider::class,
         Froiden\RestAPI\Providers\ApiServiceProvider::class
 
     ],
@@ -217,7 +216,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Entrust'   => Trebol\Entrust\EntrustFacade::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
-        'Zip' => Macellan\Zip\ZipFacade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         "ApiRoute" => Froiden\RestAPI\Facades\ApiRoute::class
 

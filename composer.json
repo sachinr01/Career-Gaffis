@@ -6,42 +6,34 @@
     "type": "project",
     "require": {
         "php": "^8.2",
-        "barryvdh/laravel-translation-manager": "^0.5.0",
-        "cviebrock/eloquent-sluggable": "10.0.*",
-        "doctrine/dbal": "^3.0",
-        "froiden/envato": "^1.0",
-        "froiden/laravel-installer": "^1.6",
-        "froiden/laravel-rest-api": "^9.0",
+        "barryvdh/laravel-translation-manager": "^0.6.9",
+        "cviebrock/eloquent-sluggable": "^12.0",
+        "doctrine/dbal": "^4.0",
+        "froiden/envato": "^5.3",
+        "froiden/laravel-installer": "^11.0",
+        "froiden/laravel-rest-api": "^13.0",
         "guzzlehttp/guzzle": "^7.8",
-        "intervention/image": "^2.3",
-        "laravel/framework": "^10.0",
-        "laravel/helpers": "^1.1",
-        "laravel/nexmo-notification-channel": "^3.1",
-        "laravel/socialite": "^5.6",
-        "laravel/tinker": "^2.0",
-        "laravel/ui": "^4.0",
-        "laravelcollective/html": "^6.0.0",
-        "league/flysystem": "^3.8",
-        "league/flysystem-aws-s3-v3": "^3.0",
-        "maatwebsite/excel": "~3.1.0",
-        "macellan/laravel-zip": "^1.0",
-        "macsidigital/laravel-zoom": "^4.1",
-        "nexmo/laravel": "^2.1",
-        "nwidart/laravel-modules": "^6.0",
-        "php-http/guzzle7-adapter": "^1.0",
-        "swiftmailer/swiftmailer": "6.0.*",
-        "trebol/entrust": "^1.0",
-        "tymon/jwt-auth": "^1.0.0",
-        "yajra/laravel-datatables-buttons": "~4.6",
-        "yajra/laravel-datatables-html": "~4.4",
-        "yajra/laravel-datatables-oracle": "^9.0"
+        "intervention/image": "^2.7",
+        "laravel/framework": "^12.0",
+        "laravel/helpers": "^1.7",
+        "laravel/nexmo-notification-channel": "^3.5",
+        "laravel/socialite": "^5.16",
+        "laravel/tinker": "^2.10",
+        "laravel/ui": "^4.6",
+        "maatwebsite/excel": "^3.1.67",
+        "nekhbet/laravel-collective-html": "^1.0",
+        "nwidart/laravel-modules": "^12.0",
+        "trebol/entrust": "^4.0",
+        "tymon/jwt-auth": "^2.2",
+        "yajra/laravel-datatables-buttons": "^12.0",
+        "yajra/laravel-datatables-html": "^12.0",
+        "yajra/laravel-datatables-oracle": "^12.0"
     },
     "require-dev": {
-        "facade/ignition": "^2.0",
-        "fzaninotto/faker": "~1.4",
-        "mockery/mockery": "0.9.*",
-        "nunomaduro/collision": "^7.0",
-        "phpunit/phpunit": "^10.0"
+        "fakerphp/faker": "^1.23",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^8.6",
+        "phpunit/phpunit": "^11.5"
     },
     "autoload": {
         "classmap": [
@@ -82,7 +74,12 @@
     "config": {
         "preferred-install": "dist",
         "sort-packages": true,
-        "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "php-http/discovery": true,
+            "wikimedia/composer-merge-plugin": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true

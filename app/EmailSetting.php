@@ -21,12 +21,14 @@ class EmailSetting extends Authenticatable
     {
         if($this->mail_driver =='smtp'){
             try {
-                $transport = new \Swift_SmtpTransport($this->mail_host, $this->mail_port, $this->mail_encryption);
+                $transport = new \Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport(
+                    $this->mail_host,
+                    (int) $this->mail_port,
+                    $this->mail_encryption === 'tls'
+                );
                 $transport->setUsername($this->mail_username);
                 $transport->setPassword($this->mail_password);
-
-                $mailer = new \Swift_Mailer($transport);
-                $mailer->getTransport()->start();
+                $transport->start();
 
                 if($this->verified == 0){
                     $this->verified = 1;
@@ -39,7 +41,7 @@ class EmailSetting extends Authenticatable
                 ];
 
 
-            } catch (\Swift_TransportException $e) {
+            } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
                 $this->verified = 0;
                 $this->save();
                 return [

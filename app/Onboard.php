@@ -10,7 +10,10 @@ class Onboard extends Model
 {
 
     protected $table = 'on_board_details';
-    protected $dates = ['joining_date', 'accept_last_date'];
+    protected $casts = [
+        'joining_date' => 'date',
+        'accept_last_date' => 'date',
+    ];
 
     public function files()
     {

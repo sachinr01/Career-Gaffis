@@ -17,7 +17,10 @@ class ZoomMeeting extends Model
     protected $table = 'zoom_meetings';
     protected $guarded = ['id'];
 
-    protected $dates = ['start_date_time', 'end_date_time'];
+    protected $casts = [
+        'start_date_time' => 'datetime',
+        'end_date_time' => 'datetime',
+    ];
 
     protected static function boot()
     {
