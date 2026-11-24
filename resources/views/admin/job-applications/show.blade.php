@@ -56,7 +56,7 @@
                     </select>
                 </div>
             @endif
-            @if($application->status->status == 'hired' && is_null($application->onboard))
+            @if(optional($application->status)->status == 'hired' && is_null($application->onboard))
                 <p class="text-muted resume-button">
                     <a href="{{ route('admin.job-onboard.create') }}?id={{$application->id}}"
                        class="btn btn-sm btn-success">@lang('app.startOnboard')</a>
@@ -92,7 +92,7 @@
 
             <div class="col-sm-12">
                 <strong>@lang('modules.jobApplication.appliedFor')</strong><br>
-                <p class="text-muted">{{ ucwords($application->job->title).' ('.ucwords($application->job->location->location).')' }}</p>
+                <p class="text-muted">{{ ucwords($application->job?->title ?? '').' ('.ucwords($application->job?->location?->location ?? '').')' }}</p>
             </div>
 
             <div class="col-sm-12">
@@ -154,10 +154,12 @@
             <div class="col-sm-12">
                 <h4>@lang('modules.front.additionalDetails')</h4>
                 @forelse($answers as $answer)
+                    @if($answer->question)
                     <strong>
-                        {{$answer->question->question}}
+                        {{ $answer->question->question }}
                     </strong><br>
                     <p class="text-muted">{{ ucfirst($answer->answer)}}</p>
+                    @endif
                 @empty
                 @endforelse
             </div>
@@ -168,9 +170,9 @@
                 <h5>@lang('modules.interviewSchedule.scheduleDetail')</h5>
                 <div class="col-sm-6">
                     <strong>@lang('modules.interviewSchedule.scheduleDate')</strong><br>
-                    <p class="text-muted">{{ $application->schedule->schedule_date->format('d M, Y H:i') }}</p>
+                    <p class="text-muted">{{ $application->schedule->schedule_date?->format('d M, Y H:i') }}</p>
                 </div>
-                @if($zoom_setting->enable_zoom == 1)
+                @if(optional($zoom_setting)->enable_zoom == 1)
                 <div class="col-sm-6">
                     <strong>@lang('modules.interviewSchedule.interviewType')</strong><br>
                     <p class="text-muted">{{ $application->schedule->interview_type == 'online' ?'Online' :'offline' }}</p>
@@ -185,7 +187,7 @@
                     </div>
                     @forelse($application->schedule->employee as $key => $emp )
                         <div class="col-sm-6">
-                            <p class="text-muted">{{ ucwords($emp->user->name) }}</p>
+                            <p class="text-muted">{{ ucwords($emp->user?->name ?? '') }}</p>
                         </div>
 
                         <div class="col-sm-6">
@@ -210,7 +212,7 @@
                 @forelse($application->schedule->comments as $key => $comment )
 
                     <div class="col-sm-12">
-                        <p class="text-muted"><b>{{$comment->user->name }}:</b> {{ $comment->comment }}</p>
+                        <p class="text-muted"><b>{{ $comment->user?->name }}:</b> {{ $comment->comment }}</p>
                     </div>
                 @empty
                 @endforelse
@@ -339,7 +341,7 @@
                     @foreach($application->notes as $key => $notes )
                         <li class="media mb-3" id="note-{{ $notes->id }}">
                             <div class="media-body">
-                                <h6 class="mt-0 mb-1">{{ ucwords($notes->user->name) }}
+                                <h6 class="mt-0 mb-1">{{ ucwords($notes->user?->name ?? '') }}
                                     <span class="pull-right font-italic font-weight-light"><small> {{ $notes->created_at->diffForHumans() }} </small>
                                         @if($user->cans('edit_job_applications'))
                                             <a href="javascript:;" class="edit-note" data-note-id="{{ $notes->id }}"><i class="fa fa-edit ml-2"  title="Edit"></i></a>

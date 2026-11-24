@@ -57,7 +57,7 @@
                                 <div class="col-md-6  col-xs-12">
                                     <div class="form-group">
                                         <label class="d-block">@lang('app.job') @lang('app.location') </label>
-                                        <p>{{ ucwords($application->job->location->location) }}</p>
+                                        <p>{{ ucwords($application->job?->location?->location ?? '') }}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-xs-12">

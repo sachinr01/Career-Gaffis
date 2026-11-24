@@ -32,7 +32,7 @@
 @endsection
 <!-- @section('header-text')
     <h1 class="hidden-sm-down">{{ ucwords($job->title) }}</h1>
-    <h5 class="hidden-sm-down"><i class="icon-map-pin"></i> {{ ucwords($job->location->location) }}</h5>
+    <h5 class="hidden-sm-down"><i class="icon-map-pin"></i> {{ ucwords($job->location?->location ?? '') }}</h5>
 @endsection -->
 
 @push('header-css')
@@ -85,7 +85,7 @@
                             placeholder="@lang('modules.front.phone')">
                 </div>
 
-                @if ($job->required_columns['gender'])
+                @if (!empty(($job->required_columns ?? [])['gender']))
                     <label class="control-label" class="required">@lang('modules.front.gender')</label>
                     <div class="form-group">
                         <div class="form-inline">
@@ -98,13 +98,13 @@
                         </div>
                     </div>
                 @endif
-                @if ($job->required_columns['dob'])
+                @if (!empty(($job->required_columns ?? [])['dob']))
                     <div class="form-group">
                         <input class="form-control form-control-lg dob" type="text" name="dob"
                                 placeholder="@lang('modules.front.dob')" autocomplete="none">
                     </div>
                 @endif
-                @if ($job->required_columns['country'])
+                @if (!empty(($job->required_columns ?? [])['country']))
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
@@ -127,7 +127,7 @@
                         </div>
                     </div>
                 @endif
-                @if($job->section_visibility['profile_image'] == 'yes')
+                @if((($job->section_visibility ?? [])['profile_image'] ?? '') == 'yes')
                     <div class="form-group">
                         <h6>@lang('modules.front.photo')</h6>
                         <img src="@if($user) {{ $user->avatar }} @endif">
@@ -141,7 +141,7 @@
                 @endif
             </div>
 
-            @if ($job->section_visibility['resume'] == 'yes')
+            @if ((($job->section_visibility ?? [])['resume'] ?? '') == 'yes')
                 <div class="col-md-4 px-20 pb-30 bt-1">
                     <h5 class="required">@lang('modules.front.resume')</h5>
                 </div>
@@ -168,7 +168,7 @@
                 </div>
             @endif
 
-            @if ($job->section_visibility['cover_letter'] == 'yes')
+            @if ((($job->section_visibility ?? [])['cover_letter'] ?? '') == 'yes')
                 <div class="col-md-4 px-20 pb-30 bt-1">
                     <h5>@lang('modules.front.coverLetter')</h5>
                 </div>
@@ -179,14 +179,14 @@
                 </div>
             @endif
 
-            @if ($job->section_visibility['terms_and_conditions'] == 'yes')
+            @if ((($job->section_visibility ?? [])['terms_and_conditions'] ?? '') == 'yes')
                 <div class="col-md-4 px-20 pb-30 bt-1">
                     <h5 class="required">@lang('modules.front.legalTerm')</h5>
                 </div>
                 <div class="col-md-8 py-30 bt-1">
                     <div class="form-group">
                         <div class="form-control form-control-lg legal-term">
-                            {!! $applicationSetting->legal_term !!}
+                            {!! optional($applicationSetting)->legal_term !!}
                         </div>
                     </div>
                     <div class="form-group mt-30">

@@ -67,7 +67,7 @@ class CandidateScheduleInterview extends Notification
     ->line(
         '<p style="font-family: Roboto, Arial, sans-serif; font-size: 16px; color: #333;">'
         . __('email.your') . ' ' . __('email.interviewSchedule.text') . ' '
-        . '- <span style=" color: #333333;">' . ucwords($this->jobApplication->job->title) . '</span>'
+        . '- <span style=" color: #333333;">' . ucwords($this->jobApplication->job?->title) . '</span>'
         . '</p>'
     )
         ->line('<p style="font-family: Roboto, Arial, sans-serif; font-size: 16px; color: #333;">'.__('email.on').' - '.$finalDate.'</p>')

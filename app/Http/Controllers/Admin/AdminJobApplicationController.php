@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-use MacsiDigital\Zoom\Facades\Zoom;
+use App\Services\Zoom;
 use App\Traits\ZoomSettings;
 use App\ZoomMeeting;
 use App\ZoomSetting;
@@ -257,7 +257,7 @@ class AdminJobApplicationController extends AdminBaseController
                 return '<a href="javascript:;" class="show-detail" data-widget="control-sidebar" data-slide="true" data-row-id="' . $row->id . '">' . ucwords($row->full_name) . '</a>';
             })
             ->editColumn('title', function ($row) {
-                return ucfirst($row->job->title);
+                return ucfirst($row->job?->title ?? '');
             })
             ->editColumn('location', function ($row) {
                 return ucwords($row->job->location->location);

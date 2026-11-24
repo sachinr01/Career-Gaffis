@@ -17,11 +17,11 @@
                 </thead>
                 <tbody>
                 @forelse($role->roleuser as $key=>$ruser)
-                    <tr id="ruser-{{ $ruser->user->id }}">
+                    <tr id="ruser-{{ $ruser->user?->id }}">
                         <td>{{ $key+1 }}</td>
-                        <td>{{ ucwords($ruser->user->name) }}</td>
+                        <td>{{ ucwords($ruser->user?->name ?? '') }}</td>
                         <td>{{ ucwords($role->name) }}</td>
-                        <td><a href="javascript:;" data-ruser-id="{{ $ruser->user->id }}" class="btn btn-sm btn-danger btn-rounded delete-category">@lang("app.remove")</a></td>
+                        <td><a href="javascript:;" data-ruser-id="{{ $ruser->user?->id }}" class="btn btn-sm btn-danger btn-rounded delete-category">@lang("app.remove")</a></td>
                     </tr>
                 @empty
                     <tr>

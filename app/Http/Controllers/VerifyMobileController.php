@@ -8,9 +8,10 @@ use App\Http\Requests\Sms\VerifyOTPCode;
 use App\Traits\SmsSettings;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Nexmo\Client\Exception\Exception;
-use Nexmo\Laravel\Facade\Nexmo;
+use Throwable;
+use Vonage\Client;
+use Vonage\Client\Credentials\Basic;
+use Vonage\Verify\Request as VerifyRequest;
 
 class VerifyMobileController extends Controller
 {
@@ -31,14 +32,13 @@ class VerifyMobileController extends Controller
             return Reply::error(__('messages.mobileVerify.changeMobileNumber'));
         }
 
-        $settings = config('nexmo.settings');
-        $settings = Arr::add($settings, 'number', substr($request->calling_code, 1).$request->mobile);
-        $settings = Arr::add($settings, 'brand', $this->smsSettings->nexmo_from);
+        $number = substr($request->calling_code, 1).$request->mobile;
+        $brand = $this->smsSettings->nexmo_from ?: config('app.name');
 
         try {
-            $verification = Nexmo::verify()->start($settings);
+            $verification = $this->vonageClient()->verify()->start(new VerifyRequest($number, $brand));
             session()->put('verify:request_id', $verification->getRequestId());
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             if ($e->getCode() == 3) {
                 return Reply::error(__('messages.mobileVerify.wrongNumber'));
             }
@@ -67,7 +67,7 @@ class VerifyMobileController extends Controller
         $user = User::select('id', 'email', 'mobile_verified', 'calling_code', 'mobile')->where('id', $this->user->id)->first();
 
         try {
-            Nexmo::verify()->check(
+            $this->vonageClient()->verify()->check(
                 session()->get('verify:request_id'),
                 $request->otp
             );
@@ -82,7 +82,7 @@ class VerifyMobileController extends Controller
 
             return Reply::successWithData(__('messages.mobileVerify.otpVerified'), ['view' => $view]);
         }
-        catch (Exception $e) {
+        catch (Throwable $e) {
             if ($e->getCode() == 16) {
                 return Reply::error(__('messages.mobileVerify.wrongOtp'));
             }
@@ -112,6 +112,14 @@ class VerifyMobileController extends Controller
         }
 
         return Reply::dataOnly([]);
+    }
+
+    private function vonageClient(): Client
+    {
+        return new Client(new Basic(
+            (string) $this->smsSettings->nexmo_key,
+            (string) $this->smsSettings->nexmo_secret
+        ));
     }
 
     public function changeMobile()

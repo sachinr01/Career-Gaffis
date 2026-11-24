@@ -34,7 +34,7 @@
                                         <select name="job_id" id="job_id" onchange="getQuestions(this.value)"
                                                 class="select2 form-control">
                                             @foreach($jobs as $job)
-                                                <option value="{{ $job->id }}">{{ ucwords($job->title).' ('.ucwords($job->location->location).')' }}</option>
+                                                <option value="{{ $job->id }}">{{ ucwords($job->title).' ('.ucwords($job->location?->location ?? '').')' }}</option>
                                             @endforeach
                                         </select>
                                     </div>

@@ -11,7 +11,7 @@ use Illuminate\Notifications\Action;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\NexmoMessage;
+use Illuminate\Notifications\Messages\VonageMessage;
 
 class NewJobApplication extends Notification
 {
@@ -43,7 +43,7 @@ class NewJobApplication extends Notification
         $via = ['mail', 'database'];
 
         if ($this->smsSetting->nexmo_status == 'active' && $notifiable->mobile_verified == 1) {
-            array_push($via, 'nexmo');
+            array_push($via, 'vonage');
         }
 
         return $via;
@@ -61,7 +61,7 @@ class NewJobApplication extends Notification
         if ($this->linkedin){
             $buttonUrl = url('https://www.linkedin.com/sales/gmail/profile/proxy/' . $this->jobApplication->email);
         }
-        $content = __($this->jobApplication->full_name).' ('.$this->jobApplication->email.') '.__('email.newJobApplication.text').' - ' . ucwords($this->jobApplication->job->title);
+        $content = __($this->jobApplication->full_name).' ('.$this->jobApplication->email.') '.__('email.newJobApplication.text').' - ' . ucwords($this->jobApplication->job?->title);
 
         return (new MailMessage)
             ->subject(__('email.newJobApplication.subject'))
@@ -86,13 +86,13 @@ class NewJobApplication extends Notification
      * Get the Nexmo / SMS representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return NexmoMessage
+     * @return VonageMessage
      */
-    public function toNexmo($notifiable)
+    public function toVonage($notifiable)
     {
-        return (new NexmoMessage)
+        return (new VonageMessage)
             ->content(
-                __($this->jobApplication->full_name).' '.__('email.newJobApplication.text').' - ' . ucwords($this->jobApplication->job->title)
+                __($this->jobApplication->full_name).' '.__('email.newJobApplication.text').' - ' . ucwords($this->jobApplication->job?->title)
             )->unicode();
     }
 }

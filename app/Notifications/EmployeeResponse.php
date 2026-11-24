@@ -11,7 +11,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\NexmoMessage;
+use Illuminate\Notifications\Messages\VonageMessage;
 
 class EmployeeResponse extends Notification
 {
@@ -44,7 +44,7 @@ class EmployeeResponse extends Notification
         $via = ['mail', 'database'];
 
         if ($this->smsSetting->nexmo_status == 'active' && $notifiable->mobile_verified == 1) {
-            array_push($via, 'nexmo');   
+            array_push($via, 'vonage');   
         }
 
         return $via;
@@ -61,9 +61,9 @@ class EmployeeResponse extends Notification
         return (new MailMessage)
             ->subject(__('email.interviewSchedule.scheduleResponse'))
             ->greeting(__('email.hello').' ' . ucwords($notifiable->name) . '!')
-            ->line(ucwords($this->userData->name).' '.__('email.interviewSchedule.employeeResponse' , ['type' => ucfirst($this->type),'job' => ucwords($this->schedule->jobApplication->job->title)]))
+            ->line(ucwords($this->userData->name).' '.__('email.interviewSchedule.employeeResponse' , ['type' => ucfirst($this->type),'job' => ucwords($this->schedule->jobApplication->job?->title)]))
             ->line(__('email.interviewSchedule.candidate').' '.ucwords($this->schedule->jobApplication->full_name))
-            ->line(__('email.interviewOn').' - ' . $this->schedule->schedule_date->format('M d, Y h:i a'))
+            ->line(__('email.interviewOn').' - ' . $this->schedule->schedule_date?->format('M d, Y h:i a'))
             ->line(__('email.thankyouNote'));
     }
 
@@ -84,13 +84,13 @@ class EmployeeResponse extends Notification
      * Get the Nexmo / SMS representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return NexmoMessage
+     * @return VonageMessage
      */
-    public function toNexmo($notifiable)
+    public function toVonage($notifiable)
     {
-        return (new NexmoMessage)
+        return (new VonageMessage)
                     ->content(
-                        ucwords($this->userData->name).'has '.ucfirst($this->type).' '.ucwords($this->schedule->jobApplication->full_name).'\'s application for '.ucwords($this->schedule->jobApplication->job->title).' on '.$this->schedule->schedule_date->format('M d, Y h:i a')
+                        ucwords($this->userData->name).'has '.ucfirst($this->type).' '.ucwords($this->schedule->jobApplication->full_name).'\'s application for '.ucwords($this->schedule->jobApplication->job?->title).' on '.$this->schedule->schedule_date?->format('M d, Y h:i a')
                     )->unicode();
     }
 }

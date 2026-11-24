@@ -10,7 +10,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\NexmoMessage;
+use Illuminate\Notifications\Messages\VonageMessage;
 
 class ScheduleInterview extends Notification
 {
@@ -42,7 +42,7 @@ class ScheduleInterview extends Notification
         $via = ['mail', 'database'];
 
         if ($this->smsSetting->nexmo_status == 'active' && $notifiable->mobile_verified == 1) {
-            array_push($via, 'nexmo');   
+            array_push($via, 'vonage');   
         }
 
         return $via;
@@ -59,7 +59,7 @@ class ScheduleInterview extends Notification
        $emailContent = (new MailMessage)
         ->subject(strip_tags(__('email.interviewSchedule.subject')))
         ->line('<p style="font-family: Roboto, Arial, sans-serif; font-size: 16px; color: #333;">'.__('email.hello').' '.ucwords($notifiable->name).'!</p>')
-        ->line('<p style="font-family: Roboto, Arial, sans-serif; font-size: 16px; color: #333;">'.ucwords($this->jobApplication->full_name).' '.__('email.interviewSchedule.text').' - '.ucwords($this->jobApplication->job->title).'</p>')
+        ->line('<p style="font-family: Roboto, Arial, sans-serif; font-size: 16px; color: #333;">'.ucwords($this->jobApplication->full_name).' '.__('email.interviewSchedule.text').' - '.ucwords($this->jobApplication->job?->title).'</p>')
         ->line('<p style="font-family: Roboto, Arial, sans-serif; font-size: 16px; color: #333;">'.__('email.interviewSchedule.response').' <a href="'.url('/login').'" style="color:#3490dc; text-decoration:none;">'.__('email.loginDashboard').'</a></p>');
 
     // Meeting links
@@ -94,13 +94,13 @@ class ScheduleInterview extends Notification
      * Get the Nexmo / SMS representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return NexmoMessage
+     * @return VonageMessage
      */
-    public function toNexmo($notifiable)
+    public function toVonage($notifiable)
     {
-        return (new NexmoMessage)
+        return (new VonageMessage)
                     ->content(
-                        __($this->jobApplication->full_name).' '.__('email.interviewSchedule.text').' - ' . ucwords($this->jobApplication->job->title)
+                        __($this->jobApplication->full_name).' '.__('email.interviewSchedule.text').' - ' . ucwords($this->jobApplication->job?->title)
                     )->unicode();
     }
 }

@@ -42,7 +42,7 @@ class CandidateNotify extends Notification
      */
     public function toMail($notifiable)
 {
-    $jobTitle = ucwords($notifiable->job->title);
+    $jobTitle = ucwords($notifiable->job?->title);
 
     return (new MailMessage)
         ->subject(__('email.interviewSchedule.hiredNotify'))

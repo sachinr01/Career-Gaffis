@@ -31,7 +31,7 @@
                                     <label class="control-label">@lang('menu.jobs')</label>
                                     <select name="job_id" id="job_id" onchange="getQuestions(this.value)" class="select2 form-control">
                                         @foreach($jobs as $job)
-                                            <option value="{{ $job->id }}" @if ($application->job_id === $job->id) selected @endif>{{ ucwords($job->title).' ('.ucwords($job->location->location).') - ' }}{{ $job->active ? 'Active' : 'Deactive' }}</option>
+                                            <option value="{{ $job->id }}" @if ($application->job_id === $job->id) selected @endif>{{ ucwords($job->title).' ('.ucwords($job->location?->location ?? '').') - ' }}{{ $job->active ? 'Active' : 'Deactive' }}</option>
                                         @endforeach
                                     </select>
                                 </div>

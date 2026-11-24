@@ -54,7 +54,7 @@
                                                         <option value="5">5</option>
                                                     </select>
                                                 </div>
-                                                <h6 class="text-muted">{{ ucwords($application->job->title) }}</h6>
+                                                <h6 class="text-muted">{{ ucwords($application->job?->title ?? '') }}</h6>
                                                 <div class="pt-2 pb-2 mt-3">
                                                     <span class="text-dark font-14">
                                                         @if(!is_null($application->schedule) )

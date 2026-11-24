@@ -49,7 +49,7 @@ class CandidateStatusChange extends Notification
         return (new MailMessage)
             ->subject(__('email.candidateStatusUpdate.subject'))
             ->greeting(__('email.hello').' ' . ucwords($notifiable->full_name) . '!')
-            ->line(__('email.candidateStatusUpdate.text').' - ' . ucwords($this->jobApplication->job->title))
+            ->line(__('email.candidateStatusUpdate.text').' - ' . ucwords($this->jobApplication->job?->title))
             ->line(__('email.ScheduleStatusCandidate.nowStatus').' - ' . ucFirst($this->jobApplication->status->status))
             ->line(__('email.thankyouNote'));
     }

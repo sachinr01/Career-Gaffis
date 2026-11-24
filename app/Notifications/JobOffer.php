@@ -9,7 +9,7 @@ use App\Traits\SmtpSettings;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\NexmoMessage;
+use Illuminate\Notifications\Messages\VonageMessage;
 
 class JobOffer extends Notification
 {
@@ -58,7 +58,7 @@ class JobOffer extends Notification
             ->subject(__('email.jobOffer.subject'))
             ->greeting(__('email.hello').' ' . ucwords($this->jobApplication->full_name) . '!')
             ->line(__('email.jobOffer.text'))
-            ->line(__('modules.jobs.jobTitle').' - ' . ucwords($this->jobApplication->job->title))
+            ->line(__('modules.jobs.jobTitle').' - ' . ucwords($this->jobApplication->job?->title))
             ->action(__('email.viewOffer'), route('jobs.job-offer', $this->jobApplication->onboard->offer_code))
             ->line(__('email.thankyouNote'));
     }
@@ -78,13 +78,13 @@ class JobOffer extends Notification
      * Get the Nexmo / SMS representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return NexmoMessage
+     * @return VonageMessage
      */
-    public function toNexmo($notifiable)
+    public function toVonage($notifiable)
     {
-        return (new NexmoMessage)
+        return (new VonageMessage)
                     ->content(
-                        __($this->jobApplication->full_name).' '.__('email.jobOffer.text').' - ' . ucwords($this->jobApplication->job->title)
+                        __($this->jobApplication->full_name).' '.__('email.jobOffer.text').' - ' . ucwords($this->jobApplication->job?->title)
                     )->unicode();
     }
 }

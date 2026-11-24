@@ -18,7 +18,7 @@ use App\Notifications\ScheduleInterview;
 use App\Notifications\ScheduleInterviewStatus;
 use App\Notifications\ScheduleStatusCandidate;
 use App\Traits\ZoomSettings;
-use MacsiDigital\Zoom\Facades\Zoom;
+use App\Services\Zoom;
 use App\ScheduleComments;
 use App\User;
 use Carbon\Carbon;
@@ -27,6 +27,7 @@ use App\ZoomSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Yajra\DataTables\Facades\DataTables;
 
 
@@ -254,6 +255,7 @@ class InterviewScheduleController extends AdminBaseController
         $this->setZoomConfigs();
         $dateTime =  $request->scheduleDate . ' ' . $request->scheduleTime;
         $dateTime = Carbon::createFromFormat('Y-m-d H:i', $dateTime);
+        $mailWarning = '';
 
         foreach ($request->candidates as $candidateId) {
             if($request->interview_type == 'online'){
@@ -296,16 +298,18 @@ class InterviewScheduleController extends AdminBaseController
 
             if (!empty($request->employees)) {
                 $interviewSchedule->employees()->attach($request->employees);
-
-                // Mail to employee for inform interview schedule
-                Notification::send($interviewSchedule->employees, new ScheduleInterview($jobApplication,$meetings));
             }
 
-            // mail to candidate for inform interview schedule
-            Notification::send($jobApplication, new CandidateScheduleInterview($jobApplication, $interviewSchedule,$meetings));
+            $mailWarning = $this->sendScheduleMail(function () use ($interviewSchedule, $jobApplication, $meetings, $request) {
+                if (!empty($request->employees)) {
+                    Notification::send($interviewSchedule->employees, new ScheduleInterview($jobApplication, $meetings));
+                }
+
+                Notification::send($jobApplication, new CandidateScheduleInterview($jobApplication, $interviewSchedule, $meetings));
+            });
         }
 
-        return Reply::redirect(route('admin.interview-schedule.index'), __('menu.interviewSchedule') . ' ' . __('messages.createdSuccessfully'));
+        return Reply::redirect(route('admin.interview-schedule.index'), __('menu.interviewSchedule') . ' ' . __('messages.createdSuccessfully') . ($mailWarning ?? ''));
     }
     public function createMeeting($user, ZoomMeeting $meeting, $id, $meetingId = null, $host=null)
     {
@@ -424,17 +428,31 @@ class InterviewScheduleController extends AdminBaseController
             $interviewSchedule->meeting_id = $meetings->id;
             $interviewSchedule->save();
         }
+        $mailWarning = '';
         if (!empty($request->employee)) {
             $interviewSchedule->employees()->sync($request->employee);
             if(!($request->interview_type)){
                 $meeting = '';
             }
-            // Mail to employee for inform interview schedule
-            Notification::send($interviewSchedule->employees, new ScheduleInterview($jobApplication,$meeting));
-
+            $mailWarning = $this->sendScheduleMail(function () use ($interviewSchedule, $jobApplication, $meeting) {
+                Notification::send($interviewSchedule->employees, new ScheduleInterview($jobApplication, $meeting));
+            });
         }
 
-        return Reply::redirect(route('admin.interview-schedule.index'), __('menu.interviewSchedule') . ' ' . __('messages.updatedSuccessfully'));
+        return Reply::redirect(route('admin.interview-schedule.index'), __('menu.interviewSchedule') . ' ' . __('messages.updatedSuccessfully') . $mailWarning);
+    }
+
+    private function sendScheduleMail(callable $send): string
+    {
+        try {
+            $send();
+        } catch (TransportExceptionInterface $e) {
+            report($e);
+
+            return ' Email could not be sent. The SMTP username or password was rejected.';
+        }
+
+        return '';
     }
 
     /**

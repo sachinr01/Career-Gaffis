@@ -84,4 +84,9 @@ class User extends Authenticatable
     {
         return $this->mobile_with_code;
     }
+
+    public function routeNotificationForVonage($notification)
+    {
+        return $this->mobile_with_code;
+    }
 }

@@ -9,7 +9,7 @@ use App\Traits\SmtpSettings;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\NexmoMessage;
+use Illuminate\Notifications\Messages\VonageMessage;
 
 class JobOfferAccepted extends Notification
 {
@@ -53,7 +53,7 @@ class JobOfferAccepted extends Notification
         return (new MailMessage)
             ->subject(__('email.jobOfferAccepted.subject'))
             ->greeting(__('email.hello').' ' . ucwords($notifiable->name) . '!')
-            ->line(__('email.jobOfferAccepted.text').' by '.__($this->jobApplication->full_name).' for job ' . ucwords($this->jobApplication->job->title))
+            ->line(__('email.jobOfferAccepted.text').' by '.__($this->jobApplication->full_name).' for job ' . ucwords($this->jobApplication->job?->title))
             ->line(__('email.loginDashboard') . ': ' . url('/login'))
             ->line(__('email.thankyouNote'));
     }
@@ -67,7 +67,7 @@ class JobOfferAccepted extends Notification
     public function toArray($notifiable)
     {
         return [
-            'data' => array_merge($this->jobApplication->onboard->toArray(), ['full_name' => $this->jobApplication->full_name, 'job_name' => ucwords($this->jobApplication->job->title)])
+            'data' => array_merge($this->jobApplication->onboard->toArray(), ['full_name' => $this->jobApplication->full_name, 'job_name' => ucwords($this->jobApplication->job?->title)])
         ];
     }
 
@@ -75,13 +75,13 @@ class JobOfferAccepted extends Notification
      * Get the Nexmo / SMS representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return NexmoMessage
+     * @return VonageMessage
      */
-    public function toNexmo($notifiable)
+    public function toVonage($notifiable)
     {
-        return (new NexmoMessage)
+        return (new VonageMessage)
                     ->content(
-                        __('email.jobOfferAccepted.text').' by '.__($this->jobApplication->full_name).' for job' . ucwords($this->jobApplication->job->title)
+                        __('email.jobOfferAccepted.text').' by '.__($this->jobApplication->full_name).' for job' . ucwords($this->jobApplication->job?->title)
                     )->unicode();
     }
 }

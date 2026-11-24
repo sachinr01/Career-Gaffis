@@ -175,7 +175,7 @@
                 @foreach($schedules as $schedule)
             {
                 id: '{{ ucfirst($schedule->id) }}',
-                title: '{{ $schedule->jobApplication->job->title }} on {{ $schedule->jobApplication->full_name }}',
+                title: '{{ $schedule->jobApplication?->job?->title }} on {{ $schedule->jobApplication?->full_name }}',
                 start: '{{ $schedule->schedule_date }}',
                 end: '{{ $schedule->schedule_date }}',
             },

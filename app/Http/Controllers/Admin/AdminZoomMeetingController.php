@@ -11,7 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Redirect;
-use MacsiDigital\Zoom\Facades\Zoom;
+use App\Services\Zoom;
 use App\ZoomMeeting;
 use App\Events\MeetingInviteEvent;
 use App\Http\Requests\ZoomMeeting\StoreMeeting;
@@ -457,8 +457,8 @@ class AdminZoomMeetingController extends AdminBaseController
 
 
         for ($i = 1; $i < $repeatCycles; $i++) {
-            $startDate = $startDate->add($repeatCount, str_plural($repeatType));
-            $dueDate = $dueDate->add($repeatCount, str_plural($repeatType));
+            $startDate = $startDate->add($repeatType, (int) $repeatCount);
+            $dueDate = $dueDate->add($repeatType, (int) $repeatCount);
 
             $otherMeeting = new ZoomMeeting();
 

@@ -10,7 +10,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\NexmoMessage;
+use Illuminate\Notifications\Messages\VonageMessage;
 
 class ScheduleInterviewStatus extends Notification
 {
@@ -43,7 +43,7 @@ class ScheduleInterviewStatus extends Notification
         $via = ['mail', 'database'];
 
         if ($this->smsSetting->nexmo_status == 'active' && $notifiable->mobile_verified == 1) {
-            array_push($via, 'nexmo');   
+            array_push($via, 'vonage');   
         }
 
         return $via;
@@ -60,7 +60,7 @@ class ScheduleInterviewStatus extends Notification
         return (new MailMessage)
             ->subject(__('email.interviewScheduleStatus.subject'))
             ->greeting(__('email.hello').' ' . ucwords($notifiable->name) . '!')
-            ->line($this->jobApplication->full_name.' '.__('email.interviewScheduleStatus.text').' - ' . ucwords($this->jobApplication->job->title) .' ' .__('email.interviewScheduleStatus.statusChangesTo'). '  ' . ucFirst($this->jobApplication->status->status))
+            ->line($this->jobApplication->full_name.' '.__('email.interviewScheduleStatus.text').' - ' . ucwords($this->jobApplication->job?->title) .' ' .__('email.interviewScheduleStatus.statusChangesTo'). '  ' . ucFirst($this->jobApplication->status?->status))
             ->action(__('email.ScheduleStatusCandidate.forCheckDetails').' '.__('email.loginDashboard'), url('/login'))
             ->line(__('email.thankyouNote'));
     }
@@ -82,13 +82,13 @@ class ScheduleInterviewStatus extends Notification
      * Get the Nexmo / SMS representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return NexmoMessage
+     * @return VonageMessage
      */
-    public function toNexmo($notifiable)
+    public function toVonage($notifiable)
     {
-        return (new NexmoMessage)
+        return (new VonageMessage)
                     ->content(
-                        $this->jobApplication->full_name.' '.__('email.interviewScheduleStatus.text').' - ' . ucwords($this->jobApplication->job->title) .' ' .__('email.interviewScheduleStatus.statusChangesTo'). '  ' . ucFirst($this->jobApplication->status->status)
+                        $this->jobApplication->full_name.' '.__('email.interviewScheduleStatus.text').' - ' . ucwords($this->jobApplication->job?->title) .' ' .__('email.interviewScheduleStatus.statusChangesTo'). '  ' . ucFirst($this->jobApplication->status?->status)
                     )->unicode();
     }
 }

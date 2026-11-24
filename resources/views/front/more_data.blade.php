@@ -1,7 +1,7 @@
 
 
         @foreach($jobs as $job)
-            <div class="col-12 col-md-6 col-lg-4" data-shuffle="item" data-groups="{{ $job->location->location.','.$job->category->name }}">
+            <div class="col-12 col-md-6 col-lg-4" data-shuffle="item" data-groups="{{ ($job->location?->location ?? '').','.($job->category?->name ?? '') }}">
                 <a href="{{ route('jobs.jobDetail', [$job->slug]) }}" class="job-opening-card">
                 <div class="card card-bordered">
                     <div class="card-block">
@@ -12,7 +12,7 @@
                             <small class="company-title mb-50">@lang('app.by') {{ ucwords($job->company->company_name) }}</small>
                         @endif
                         <div class="d-flex flex-wrap justify-content-between card-location">
-                            <span class="fw-400 fs-14"><i class="mr-5 fa fa-map-marker"></i>{{ ucwords($job->location->location).', '.ucwords($job->location->country->country_name) }}</span>
+                            <span class="fw-400 fs-14"><i class="mr-5 fa fa-map-marker"></i>{{ ucwords($job->location?->location ?? '').', '.ucwords($job->location?->country?->country_name ?? '') }}</span>
                             <span class="fw-400 fs-14">{{ ucwords($job->category->name) }}<i class="ml-5 fa fa-graduation-cap"></i></span>
                         </div>
                     </div>

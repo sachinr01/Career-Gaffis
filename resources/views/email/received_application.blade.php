@@ -2,7 +2,7 @@
     {{-- Header --}}
     @slot('header')
         @component('mail::header', ['url' => config('app.url')])
-            {{ $jobApplication->job->title }}
+            {{ $jobApplication->job?->title }}
         @endcomponent
     @endslot
     {{-- Body --}}
@@ -11,7 +11,7 @@
        @lang('email.hello') {{ $jobApplication->full_name }}!
     </p>
     <p style="font-family: Roboto, Arial, sans-serif; font-size: 16px; color: #333;">
-        @lang('email.applicationReceived.thankYouForApplying', ['jobTitle' => $jobApplication->job->title])
+        @lang('email.applicationReceived.thankYouForApplying', ['jobTitle' => $jobApplication->job?->title])
     </p>
 
     <p style="font-family: Roboto, Arial, sans-serif; font-size: 16px; color: #333;">

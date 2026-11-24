@@ -61,7 +61,7 @@
         </div>
             <strong>@lang('modules.interviewSchedule.job')</strong><br>
             <p class="text-muted">
-                {{ ucwords($schedule->jobApplication->job->title) . ' (' . ucwords($schedule->jobApplication->job->location->location) . ')' }}
+                {{ ucwords($schedule->jobApplication?->job?->title ?? '') . ' (' . ucwords($schedule->jobApplication?->job?->location?->location ?? '') . ')' }}
             </p>
         <hr>
         <div class="row">
@@ -74,7 +74,7 @@
 
             @forelse($schedule->employee as $key => $emp )
                 <div class="col-sm-6">
-                    <p class="text-muted">{{ ucwords($emp->user->name) }}</p>
+                    <p class="text-muted">{{ ucwords($emp->user?->name ?? '') }}</p>
                 </div>
 
                 <div class="col-sm-6">
@@ -210,7 +210,7 @@
             @forelse($schedule->jobApplication->schedule->comments as $key => $comment )
                 <div class="row">
                     <div class="col-sm-6">
-                        <p class="text-muted">{{ $comment->user->name }}</p>
+                        <p class="text-muted">{{ $comment->user?->name }}</p>
                     </div>
                 </div>
 

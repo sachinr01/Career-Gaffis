@@ -28,8 +28,11 @@ class FrontJobApplication extends CoreRequest
     public function rules()
     {
         $job = Job::select('id', 'required_columns', 'section_visibility')->where('id', $this->job_id)->first();
-        $requiredColumns = $job->required_columns;
-        $sectionVisibility = $job->section_visibility;
+        if (! $job) {
+            return ['job_id' => 'required'];
+        }
+        $requiredColumns = $job->required_columns ?? [];
+        $sectionVisibility = $job->section_visibility ?? [];
 
         $rules = [
             'full_name' => 'required',
@@ -59,13 +62,13 @@ class FrontJobApplication extends CoreRequest
             }
         }
 
-        if ($requiredColumns['gender']) {
+        if (!empty($requiredColumns['gender'])) {
             $rules = Arr::add($rules, 'gender', 'required|in:male,female,others');
         }
-        if ($requiredColumns['dob']) {
+        if (!empty($requiredColumns['dob'])) {
             $rules = Arr::add($rules, 'dob', 'required|date');
         }
-        if ($requiredColumns['country']) {
+        if (!empty($requiredColumns['country'])) {
             $rules = Arr::add($rules, 'country', 'required|integer|min:1');
             $rules = Arr::add($rules, 'state', 'required|integer|min:1');
             $rules = Arr::add($rules, 'city', 'required');
@@ -77,8 +80,9 @@ class FrontJobApplication extends CoreRequest
             foreach($this->get('answer') as $key => $value){
 
                 $answer = Question::where('id', $key)->first();
-                if($answer->required == 'yes')
-                $rules["answer.{$key}"] = 'required';
+                if ($answer && $answer->required == 'yes') {
+                    $rules["answer.{$key}"] = 'required';
+                }
             }
         }
 

@@ -12,7 +12,7 @@
                 <li class="deco" id="schedule-{{$dtData->id}}" onclick="getScheduleDetail(event, {{$dtData->id}}) "
                     style="list-style: none;">
                     <h5 class="text-muted"
-                        style="float: left">{{ ucfirst($dtData->jobApplication->job->title) }} </h5>
+                        style="float: left">{{ ucfirst($dtData->jobApplication?->job?->title ?? '') }} </h5>
                     <div class="pull-right">
                         @if($user->cans('edit_schedule'))
                             <span style="margin-right: 15px;">

@@ -92,7 +92,9 @@ $userPermissions = [];
 
 if (!empty($this->getPermissions->roles) && isset($this->getPermissions->roles[0])) {
     foreach ($this->getPermissions->roles[0]->permissions as $value) {
-        $userPermissions[] = $value->permission->name;
+        if ($value->permission) {
+            $userPermissions[] = $value->permission->name;
+        }
     }
 }
 

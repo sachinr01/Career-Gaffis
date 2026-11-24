@@ -86,7 +86,7 @@
 
                     <div class="p-30 bb-1" style="padding-bottom:0px !important;">
                         <p class="fw-900 fs-16 text-dark mb-0">@lang('menu.locations')</p>
-                        <p class="fw-400 text-color fs-16 mb-0">{{ ucwords($job->location->location) }}</p>
+                        <p class="fw-400 text-color fs-16 mb-0">{{ ucwords($job->location?->location ?? '') }}</p>
                     </div>
 
                     <div class="p-30 bb-1" style="padding-bottom:0px !important;">

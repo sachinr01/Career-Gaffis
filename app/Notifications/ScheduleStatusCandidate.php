@@ -53,7 +53,7 @@ class ScheduleStatusCandidate extends Notification
             ->greeting(__('email.hello').' ' . ucwords($notifiable->full_name) . '!')
            ->line(
     __('email.your') . ' ' . __('email.ScheduleStatusCandidate.text') . ' - ' 
-    . ucwords($this->jobApplication->job->title) . ' ' 
+    . ucwords($this->jobApplication->job?->title) . ' ' 
     . __('email.ScheduleStatusCandidate.hasBeen') . ' - ' 
     . ucfirst($this->jobApplication->status->status)
 )

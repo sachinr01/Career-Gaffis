@@ -45,7 +45,7 @@ class CandidateReminder extends Notification
         return (new MailMessage)
             ->subject(__('email.interviewSchedule.interviewReminder'))
             ->greeting(__('email.hello').' ' . ucwords($notifiable->full_name) . '!')
-            ->line(__('email.your').' '.__('email.interviewSchedule.text').' - ' . ucwords($notifiable->job->title))
+            ->line(__('email.your').' '.__('email.interviewSchedule.text').' - ' . ucwords($notifiable->job?->title))
             ->line(__('email.on').' - ' . $this->schedule->schedule_date->format('M d, Y h:i a'))
             ->line(__('email.thankyouNote'));
     }

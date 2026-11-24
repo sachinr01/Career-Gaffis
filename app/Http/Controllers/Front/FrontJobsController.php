@@ -29,6 +29,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Http\Requests\FrontJobApplication;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Http; // reCAPTCHA v2
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 class FrontJobsController extends FrontBaseController
 {
@@ -151,7 +152,7 @@ class FrontJobsController extends FrontBaseController
             $this->metaDescription = $this->job->meta_details['description'];
         }
 
-        $this->metaImage = $this->job->company->logo_url;
+        $this->metaImage = $this->job->company?->logo_url;
         $this->pageUrl = request()->url();
         return view('front.job-detail', $this->data);
     }
@@ -176,7 +177,7 @@ class FrontJobsController extends FrontBaseController
             $this->metaDescription = $this->job->meta_details['description'];
         }
 
-        $this->metaImage = $this->job->company->logo_url;
+        $this->metaImage = $this->job->company?->logo_url;
         $this->pageUrl = request()->url();
         return view('front.jobtrack', $this->data);
     }
@@ -323,8 +324,12 @@ class FrontJobsController extends FrontBaseController
             $linkedin = true;
         }
 
-        Notification::send($users, new NewJobApplication($jobApplication, $linkedin));
-        Mail::send(new ReceivedApplication($jobApplication));
+        try {
+            Notification::send($users, new NewJobApplication($jobApplication, $linkedin));
+            Mail::send(new ReceivedApplication($jobApplication));
+        } catch (TransportExceptionInterface $e) {
+            report($e);
+        }
 
         return Reply::dataOnly(['status' => 'success', 'msg' => __('modules.front.applySuccessMsg')]);
     }
@@ -370,7 +375,9 @@ class FrontJobsController extends FrontBaseController
         $result = array_filter($arr, function ($value) use ($id) {
             return $value['id'] == $id;
         });
-        return current($result)['name'];
+        $row = current($result);
+
+        return is_array($row) ? ($row['name'] ?? '') : '';
     }
 
     public function changeLanguage($code)

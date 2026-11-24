@@ -10,13 +10,13 @@ function get_application_status_data($data_id)
 	$query 			=	"SELECT * FROM application_status WHERE id = ".$data_id;	
  	
  	$result 		=	$conn->query($query);
-	if($result->num_rows > 0){			
+	if($result && $result->num_rows > 0){			
  		while( $row	=	$result->fetch_assoc()) {	
   			$status_data	=	$row['status'];
 		}
 	}
    
-	return $status_data;
+	return $status_data ?? '';
 }
 
  
@@ -35,9 +35,14 @@ $new_status			=	get_application_status_data($status_id);
 $status_comment		=	"Status change from $current_status to $new_status";      
 
 
+$full_name = '';
+$email = '';
+$job_id = 0;
+$job_title = '';
+
 $query 		=	"SELECT * FROM job_applications WHERE id = ".$id;	
 $result 	=	$conn->query($query);
-if($result->num_rows > 0){			
+if($result && $result->num_rows > 0){			
  	while( $row=$result->fetch_assoc()) {	
  		$full_name	=	$row["full_name"];
 		$email		=	$row["email"];
@@ -47,7 +52,7 @@ if($result->num_rows > 0){
 
 $query_job 			=	"SELECT * FROM jobs WHERE id = ".$job_id;	
 $result_job			=	$conn->query($query_job);
-if($result_job->num_rows > 0){			
+if($result_job && $result_job->num_rows > 0){			
 	$row			=	$result_job->fetch_assoc(); 
 	$job_title		=	$row["title"];
 }

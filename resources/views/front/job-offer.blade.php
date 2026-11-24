@@ -2,7 +2,7 @@
 
 @section('header-text')
     <h1 class="hidden-sm-down">{{ ucwords($job->title) }}</h1>
-    <h5 class="hidden-sm-down"><i class="icon-map-pin"></i> {{ ucwords($job->location->location) }}</h5>
+    <h5 class="hidden-sm-down"><i class="icon-map-pin"></i> {{ ucwords($job->location?->location ?? '') }}</h5>
 @endsection
 @push('head-style')
     <style>
@@ -97,7 +97,7 @@
                     </div>
                     <div class="col-md-6">
                         <h6>@lang('app.location') </h6>
-                        <p>{{ ucwords($job->location->location) }}</p>
+                        <p>{{ ucwords($job->location?->location ?? '') }}</p>
                     </div>
                     <div class="col-md-6">
                         <h6>@lang('app.category') </h6>
