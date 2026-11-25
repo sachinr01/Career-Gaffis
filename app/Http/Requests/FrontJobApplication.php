@@ -53,7 +53,7 @@ class FrontJobApplication extends CoreRequest
                         $rules = Arr::add($rules, 'photo', 'required|mimes:jpeg,jpg,png');
                     }
                     if ($key === 'resume') {
-                        $rules = Arr::add($rules, 'resume', 'required|mimes:jpeg,jpg,png,doc,docx,rtf,xls,xlsx,pdf');
+                        $rules = Arr::add($rules, 'resume', 'required|file|max:10240|extensions:jpeg,jpg,png,doc,docx,rtf,xls,xlsx,pdf');
                     }
                     if ($key === 'terms_and_conditions') {
                         $rules = Arr::add($rules, 'term_agreement', 'required');
@@ -97,7 +97,9 @@ class FrontJobApplication extends CoreRequest
             'country.min' => 'Please select country.',
             'state.min' => 'Please select state.',
             'city.required' => 'Please enter city.',
-            'email.unique' => 'You have already applied for this job with this email. Try different one.'
+            'email.unique' => 'You have already applied for this job with this email. Try different one.',
+            'resume.extensions' => 'The resume must be a file of type: jpeg, jpg, png, doc, docx, rtf, xls, xlsx, pdf.',
+            'resume.max' => 'The resume may not be greater than 10 MB.',
         ];
     }
 }

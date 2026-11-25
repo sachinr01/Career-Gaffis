@@ -55,7 +55,7 @@ class StoreJobApplication extends CoreRequest
                         $rules = Arr::add($rules, 'photo', 'required|mimes:jpeg,jpg,png');
                     }
                     if ($key === 'resume') {
-                        $rules = Arr::add($rules, 'resume', 'required|mimes:jpeg,jpg,png,doc,docx,rtf,xls,xlsx,pdf');
+                        $rules = Arr::add($rules, 'resume', 'required|file|max:10240|extensions:jpeg,jpg,png,doc,docx,rtf,xls,xlsx,pdf');
                     }
                 }
             }
